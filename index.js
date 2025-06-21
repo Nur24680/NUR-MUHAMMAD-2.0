@@ -16,11 +16,6 @@ login({ appState }, (err, api) => {
 
   global.api = api;
 
-api.listenMqtt(async (err, event) => {
-  if (err) return console.error(err);
-  // Event handle logic here
-});
-
   // 🔁 Load Commands
   const commandFiles = fs.readdirSync('./scripts/commands').filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {
@@ -42,7 +37,7 @@ api.listenMqtt(async (err, event) => {
   api.listenMqtt(async (err, event) => {
     if (err) return console.error(err);
 
-    // 🔥 Handle events (log:subscribe, log:unsubscribe, etc.)
+    // 🔥 Handle events
     for (const evt of global.client.events) {
       if (evt.config.eventType.includes(event.type)) {
         try {
