@@ -1,0 +1,3 @@
+[submodule "scripts/commands/tempbot"]
+	path = scripts/commands/tempbot
+	url = https://github.com/MOHAMMAD-SHOUROV/tempbot.git
