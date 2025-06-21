@@ -1,0 +1,27 @@
+name: 🤖 SHOUROV-BOT Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 রেপো ক্লোন হচ্ছে
+        uses: actions/checkout@v2
+
+      - name: 🟢 Node.js সেটআপ হচ্ছে
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📁 ডিপেন্ডেন্সি ইনস্টল হচ্ছে
+        run: npm install
+
+      - name: 🚀 বট চালু হচ্ছে (index.js)
+        run: |
+          echo "Bot by King_Shourov is starting..."
+          node index.js
