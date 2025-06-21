@@ -1,4 +1,4 @@
-const login = require("fb-chat-api");
+const login = require("facebook-chat-api");
 const fs = require("fs-extra");
 const path = require("path");
 require("dotenv").config();
