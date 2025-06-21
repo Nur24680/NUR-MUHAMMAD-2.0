@@ -1,0 +1,28 @@
+{
+  "author": "Shourov",
+  "autoRestart": true,
+  "accpetPending": false,
+  "developermode": false,
+  "language": "en",
+  "notification": false,
+  "approval": false,
+  "saveState": true,
+  "banMsg": false,
+  "adminOnlyMsg": false,
+  "BOTNAME": "[ / ] • 𝐒𝐇𝐎𝐔𝐑𝐎𝐕_𖣘 -𝐁𝐎𝐓🤖",
+  "PREFIX": "/",
+  "react": "☠️",
+  "OPERATOR": [
+    "100070297030133"
+  ],
+  "ADMINBOT": [
+    "100070297030133"
+  ],
+  "OWNER": ["100070297030133"],
+  "APPROVED": [],
+  "disabledcmds": [],
+  "disabledevents": [],
+  "note": "make sure that the bot name you entered is all lowercase",
+  "notice": "don't change author name and owner UID. Otherwise bot may not work.",
+  "notice2": "if you use email and password, use saveState false; otherwise, use saveState true"
+}
