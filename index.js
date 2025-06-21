@@ -11,26 +11,44 @@ global.client = { commands: new Map(), events: [] };
 global.data = { threadData: new Map(), userName: new Map() };
 
 login({ appState }, (err, api) => {
-  if (err) return console.error(chalk.red("❌ Login Failed:", err));
-  console.log(chalk.green("✅ Shourov-Bot চালু হয়েছে!"));
+  if (err || !api) {
+    console.error(chalk.red("❌ Login Failed:", err));
+    return;
+  }
 
+  console.log(chalk.green("✅ Shourov-Bot চালু হয়েছে!"));
   global.api = api;
 
   // 🔁 Load Commands
   const commandFiles = fs.readdirSync('./scripts/commands').filter(file => file.endsWith('.js'));
   for (const file of commandFiles) {
-    const command = require(`./scripts/commands/${file}`);
-    global.client.commands.set(command.config.name, command);
-    console.log(`📘 Loaded command: ${command.config.name}`);
+    try {
+      const command = require(`./scripts/commands/${file}`);
+      if (!command.config || !command.config.name) {
+        console.warn(chalk.yellow(`⚠️ Skipping invalid command file: ${file}`));
+        continue;
+      }
+      global.client.commands.set(command.config.name, command);
+      console.log(`📘 Loaded command: ${command.config.name}`);
+    } catch (e) {
+      console.error(`❌ Failed to load command ${file}:`, e);
+    }
   }
 
   // 🔁 Load Events
   const eventFiles = fs.readdirSync('./scripts/events').filter(file => file.endsWith('.js'));
   for (const file of eventFiles) {
-    const event = require(`./scripts/events/${file}`);
-    if (!event.config || !event.config.eventType) continue;
-    global.client.events.push(event);
-    console.log(`📗 Loaded event: ${event.config.name}`);
+    try {
+      const event = require(`./scripts/events/${file}`);
+      if (!event.config || !event.config.eventType || !event.config.name) {
+        console.warn(chalk.yellow(`⚠️ Skipping invalid event file: ${file}`));
+        continue;
+      }
+      global.client.events.push(event);
+      console.log(`📗 Loaded event: ${event.config.name}`);
+    } catch (e) {
+      console.error(`❌ Failed to load event ${file}:`, e);
+    }
   }
 
   // 🧠 Listen for messages & events
