@@ -6,7 +6,7 @@ const chalk = require("chalk");
 const { listenMqtt } = require("facebook-chat-api");
 
 // Load appstate (cookie)
-const appState = require("./config/appstate.json");
+const appState = require("appstate.json");
 
 listenMqtt({ appState }, async (err, api) => {
   if (err) {
@@ -58,7 +58,7 @@ listenMqtt({ appState }, async (err, api) => {
     if (event.type !== "message" && event.type !== "message_reply") return;
 
     const body = event.body || "";
-    const prefix = "!"; // command prefix
+    const prefix = "/"; // command prefix
     if (!body.startsWith(prefix)) return;
 
     const args = body.slice(prefix.length).trim().split(/ +/);
