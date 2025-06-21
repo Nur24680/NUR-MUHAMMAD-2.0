@@ -1,13 +1,13 @@
 # ðŸ¤– SHOUROV-BOT
 
-Welcome to **SHOUROV-BOT** â€” A custom Facebook Messenger bot built with `facebook-chat-api` by **ðŠð¢ð§ð _ð’ð¡ð¨ð®ð«ð¨ð¯**.
+Welcome to **SHOUROV-BOT** â€” A custom Facebook Messenger bot built with `facebook-chat-api` by   *𝐊𝐈𝐍𝐆 𝐒𝐇𝐎𝐔𝐑𝐎𝐕ð _ð’ð¡ð¨ð®ð«ð¨ð¯**.
 
 ---
 
 ## ðŸ‘‘ BOT OWNER
 
-- ðŸ‘¤ **Name:** ðŠð¢ð§ð _ð’ð¡ð¨ð®ð«ð¨ð¯  
-- ðŸ“˜ **Facebook:** [facebook.com/www.xsxx.com365](https://www.facebook.com/www.xsxx.com365)  
+- ðŸ‘¤ **Name:** 𝐊𝐈𝐍𝐆 𝐒𝐇𝐎𝐔𝐑𝐎𝐕 _ð’ð¡ð¨ð®ð«ð¨ð¯  
+- [Facebook](https://www.facebook.com/www.xsxx.com365)  
 - ðŸ“ž **WhatsApp:** 01709281334  
 - ðŸ“§ **Email:** shourovislam5430@gmail.com  
 
