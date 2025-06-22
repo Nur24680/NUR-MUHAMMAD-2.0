@@ -49,7 +49,7 @@ login({ appState }, async (err, api) => {
   }
 
   // === Listen to Messages ===
-  api.listenMqtt(async (err, event) => {
+  api.listen(async (err, event) => {
     if (err) return console.error(chalk.red("[❌] Listen Error:"), err);
     if (!["message", "message_reply"].includes(event.type)) return;
 
