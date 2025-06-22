@@ -1,10 +1,14 @@
 const fs = require('fs');
 
+// cookies.json থেকে কুকি পড়া
 const cookies = JSON.parse(fs.readFileSync('cookies.json', 'utf8'));
 
+// শুধু c_user আর xs ফিল্টার করা
 const appstate = cookies
   .filter(c => c.key === 'c_user' || c.key === 'xs')
   .map(({ key, value }) => ({ key, value }));
 
+// appstate.json ফাইল ./config ফোল্ডারে লেখা
 fs.writeFileSync('./config/appstate.json', JSON.stringify(appstate, null, 2));
+
 console.log('✅ appstate.json তৈরি হয়েছে');
