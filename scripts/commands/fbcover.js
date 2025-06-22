@@ -1,55 +1,52 @@
-const axios = require('axios');
-const jimp = require("jimp");
+const Jimp = require("jimp");
 const fs = require("fs");
+const path = require("path");
 
-module.exports.config = {
-  name: "fbcover",
-  version: "1.0.0",
-  permssion: 0,
-  credits: "Mohammad Nayan",
-  description: "",
-  category: "fbcover",
-  prefix: true,
-    cooldowns: 2,
-};
+module.exports = {
+  config: {
+    name: "fbcover",
+    version: "1.0.0",
+    permission: 0,
+    credits: "King_Shourov",
+    description: "Generate a custom Facebook cover using your name",
+    prefix: true,
+    category: "tools",
+    usages: "[name]",
+    cooldowns: 5
+  },
 
-  module.exports.run = async function({ api, event, args, Users, Threads, Currencies}) {
-    const uid = event.senderID;
-    const info = args.join(" ");
-    const apis = await axios.get('https://raw.githubusercontent.com/MOHAMMAD-NAYAN-07/Nayan/main/api.json')
-  const n = apis.data.api
-    var id = Object.keys(event.mentions)[0] || event.senderID;
-  var nam = await Users.getNameUser(id);
-  var ThreadInfo = await api.getThreadInfo(event.threadID);
-    if (!info) {
-      return api.sendMessage("Please enter in the format:\nfbcover name - subname - address - email - phone nbr - color (default = no )", event.threadID);
-    } else {
-      const msg = info.split("-");
-      const name = msg[0].trim();
-      const subname = msg[1].trim();
-      const address = msg[2].trim();
-      const email = msg[3].trim();
-      const phone = msg[4].trim();
-      const color = msg[5].trim();
+  run: async function({ api, event, args }) {
+    const name = args.join(" ") || "King_Shourov";
 
-      api.sendMessage(`Processing your cover, please wait...`, event.threadID, (err, info) => setTimeout(() => { api.unsendMessage(info.messageID) }, 5000));
+    const threadID = event.threadID;
+    const messageID = event.messageID;
 
-      const img = `${n}/fbcover/v1?name=${encodeURIComponent(name)}&uid=${id}&address=${encodeURIComponent(address)}&email=${encodeURIComponent(email)}&subname=${encodeURIComponent(subname)}&sdt=${encodeURIComponent(phone)}&color=${encodeURIComponent(color)}`;
+    try {
+      // Load background cover image (you can change this path or use a URL)
+      const background = await Jimp.read("https://i.postimg.cc/zfjxwhj6/bg-cover.jpg");
 
-      try {
-        const response = await axios.get(img, { responseType: 'arraybuffer' });
-        const image = await jimp.read(response.data);
-        const outputPath = `./fbcover_${uid}.png`;
-        await image.writeAsync(outputPath);
+      // Load a font
+      const font = await Jimp.loadFont(Jimp.FONT_SANS_64_WHITE);
 
-        const attachment = fs.createReadStream(outputPath);
-        api.sendMessage({ 
-          body: `◆━━━━━━━━◆◆━━━━━━━━◆\n🔴INPUT NAME: ${name}\n🔵INPUT SUBNAME:${subname}\n📊ADDRESS: ${address}\n✉️EMAIL: ${email}\n☎️PHON NO.: ${phone}\n🎇COLOUR: ${color}\n🆔ID: ${nam}\n◆━━━━━━━━◆◆━━━━━━━━◆`,
-          attachment
-        }, event.threadID, () => fs.unlinkSync(outputPath));
-      } catch (error) {
-        console.error(error);
-        api.sendMessage("An error occurred while generating the FB cover.", event.threadID);
-      }
+      // Add text (you can position and style as needed)
+      background.print(font, 100, 100, `🔥 ${name} 🔥`);
+
+      // Save output image
+      const outputPath = path.join(__dirname, "fbcover_output.jpg");
+      await background.writeAsync(outputPath);
+
+      // Send the image
+      const msg = {
+        body: "🔖 Here's your Facebook cover:",
+        attachment: fs.createReadStream(outputPath)
+      };
+
+      api.sendMessage(msg, threadID, () => {
+        fs.unlinkSync(outputPath); // Clean up
+      }, messageID);
+    } catch (err) {
+      console.error(err);
+      api.sendMessage("❌ Couldn't generate the cover. Try again later.", threadID, messageID);
     }
-  };
+  }
+};
