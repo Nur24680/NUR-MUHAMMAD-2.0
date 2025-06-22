@@ -3,12 +3,13 @@ const fs = require("fs-extra");
 const chalk = require("chalk");
 
 // Cookie-based facebook-chat-api
-const { listenMqtt } = require("facebook-chat-api");
+const login = require("facebook-chat-api");
 
 // Load appstate (cookie)
-const appState = require("./appstate.json");
+const appState = require("./config/appstate.json"); // Ensure it's inside /config/
 
-listenMqtt({ appState }, async (err, api) => {
+// Login
+login({ appState }, async (err, api) => {
   if (err) {
     console.error(chalk.red("[❌] Login Failed:"), err);
     return;
