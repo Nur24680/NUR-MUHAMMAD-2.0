@@ -1,0 +1,10 @@
+const fs = require('fs');
+
+const cookies = JSON.parse(fs.readFileSync('cookies.json', 'utf8'));
+
+const appstate = cookies
+  .filter(c => c.key === 'c_user' || c.key === 'xs')
+  .map(({ key, value }) => ({ key, value }));
+
+fs.writeFileSync('./config/appstate.json', JSON.stringify(appstate, null, 2));
+console.log('✅ appstate.json তৈরি হয়েছে');
