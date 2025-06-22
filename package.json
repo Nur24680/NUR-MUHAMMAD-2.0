@@ -16,6 +16,7 @@
     "fs-extra": "^10.0.1",
     "node-fetch": "^2.7.0",
     "canvas": "^2.11.2",
-    "jimp": "^0.22.10"
+    "jimp": "^0.22.10",
+    "image-downloader": "^4.0.3"
   }
 }
