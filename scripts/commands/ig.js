@@ -1,18 +1,16 @@
 /** Đổi Credit ? Bọn t đã không mã hóa cho mà edit rồi thì tôn trọng nhau tý đi ¯\_(ツ)_/¯ **/
 module.exports.config = {
-  name: `${global.config.PREFIX}`,
+  name: "islampost", // ✅ static command name দিন
   version: "1.0.0", 
   permission: 0,
   credits: "nayan",
-  description: "", 
+  description: "Islamic post with random image",
   prefix: true,
   category: "user",
   usages: "",
   cooldowns: 5, 
-  dependencies: {
-	}
+  dependencies: {}
 };
-
 
 module.exports.run = async({api,event,args,client,Users,Threads,__GLOBAL,Currencies}) => {
 const axios = global.nodemodule["axios"];
