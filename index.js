@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs-extra");
 const chalk = require("chalk");
-const login = require("facebook-chat-api");
+const login = require("fca-unofficial");
 
 // === Global Config Load ===
 global.config = require("./config/config.json");
