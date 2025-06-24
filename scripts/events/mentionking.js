@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports.config = {
   name: "mentionKing",
-  version: "2.0.0",
+  version: "2.0.1",
   eventType: ["message"],
   credits: "𝐊𝐢𝐧𝐠_𝐒𝐡𝐨𝐮𝐫𝐨𝐯",
   description: "𝐊𝐢𝐧𝐠_𝐒𝐡𝐨𝐮𝐫𝐨𝐯 কে মেনশন করলে রেসপন্স দেয়"
@@ -42,24 +42,25 @@ const replies = [
 ];
 
 module.exports.run = async function ({ api, event }) {
-  const mentions = event.mentions;
-  if (!mentions || !Object.keys(mentions).includes(KING_UID)) return;
-
   try {
-    const url = `https://graph.facebook.com/${KING_UID}/picture?width=512&height=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
-    const pathImg = path.join(__dirname, "kingMention.jpg");
-    const response = await axios.get(url, { responseType: "arraybuffer" });
-    fs.writeFileSync(pathImg, Buffer.from(response.data, "binary"));
+    if (!event || !event.mentions || typeof event.mentions !== "object") return;
+    if (!Object.hasOwn(event.mentions, KING_UID)) return;
 
-    const msg = {
-      body: `${replies[Math.floor(Math.random() * replies.length)]}\n\n📌 প্রোফাইল: ${KING_FB_LINK}`,
-      attachment: fs.createReadStream(pathImg)
-    };
+    const avatarUrl = `https://graph.facebook.com/${KING_UID}/picture?width=512&height=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
+    const imagePath = path.join(__dirname, "kingMention.jpg");
 
-    api.sendMessage(msg, event.threadID, () => {
-      fs.unlinkSync(pathImg);
+    const imageBuffer = await axios.get(avatarUrl, { responseType: "arraybuffer" });
+    fs.writeFileSync(imagePath, Buffer.from(imageBuffer.data, "binary"));
+
+    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+    api.sendMessage({
+      body: `${randomReply}\n\n📌 প্রোফাইল: ${KING_FB_LINK}`,
+      attachment: fs.createReadStream(imagePath)
+    }, event.threadID, () => {
+      fs.unlinkSync(imagePath);
     });
   } catch (err) {
-    console.error("❌ Error sending mentionKing reply:", err);
+    console.error("❌ mentionKing.js Error:", err.message || err);
   }
 };
