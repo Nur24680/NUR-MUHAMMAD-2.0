@@ -8,31 +8,31 @@ module.exports.config = {
 
 module.exports.run = async ({ event, api, Threads, Users }) => {
   try {
-    if (!event || !event.logMessageData || !event.threadID) return;
+    // Event null হলে বা দরকারি ডেটা না থাকলে স্কিপ করো
+    if (!event?.logMessageData?.leftParticipantFbId || !event.threadID) return;
 
     const threadID = event.threadID;
     const userID = event.logMessageData.leftParticipantFbId;
 
-    if (!userID) return;
-
-    // যদি বট নিজে group থেকে বের হয়, কিছু না করে ফেরত যাক
+    // বট নিজে বের হলে কিছু করো না
     const botID = api.getCurrentUserID();
     if (userID === botID) return;
 
+    // Anti-out সক্রিয় কিনা চেক করো
     const threadData = (await Threads.getData(threadID))?.data || {};
     if (threadData.antiout === false) return;
 
-    // ইউজারের নাম বের করা
+    // নাম বের করো
     const userName =
       global.data?.userName?.get(userID) ||
       (await Users.getNameUser(userID)) ||
       "একজন সদস্য";
 
-    // সে নিজে বের হয়েছে কিনা না কি কেউ বের করে দিয়েছে
+    // নিজে বের হয়েছে কিনা
     const isSelfOut = event.author === userID;
-
     if (!isSelfOut) return;
 
+    // আবার গ্রুপে অ্যাড করো
     api.addUserToGroup(userID, threadID, (err) => {
       if (err) {
         return api.sendMessage(
@@ -41,7 +41,7 @@ module.exports.run = async ({ event, api, Threads, Users }) => {
         );
       }
 
-      api.sendMessage(
+      return api.sendMessage(
         `😈 ${userName}, তুমি পালাতে পারবে না! আবার তোমায় আনলাম!`,
         threadID
       );
