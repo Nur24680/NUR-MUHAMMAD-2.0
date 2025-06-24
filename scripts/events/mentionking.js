@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports.config = {
   name: "mentionKing",
-  version: "2.0.1",
+  version: "2.0.2",
   eventType: ["message"],
   credits: "𝐊𝐢𝐧𝐠_𝐒𝐡𝐨𝐮𝐫𝐨𝐯",
   description: "𝐊𝐢𝐧𝐠_𝐒𝐡𝐨𝐮𝐫𝐨𝐯 কে মেনশন করলে রেসপন্স দেয়"
@@ -49,17 +49,20 @@ module.exports.run = async function ({ api, event }) {
     const avatarUrl = `https://graph.facebook.com/${KING_UID}/picture?width=512&height=512&access_token=350685531728|62f8ce9f74b12f84c123cc23437a4a32`;
     const imagePath = path.join(__dirname, "kingMention.jpg");
 
-    const imageBuffer = await axios.get(avatarUrl, { responseType: "arraybuffer" });
-    fs.writeFileSync(imagePath, Buffer.from(imageBuffer.data, "binary"));
+    const response = await axios.get(avatarUrl, { responseType: "arraybuffer" });
+    await fs.outputFile(imagePath, response.data);
 
     const randomReply = replies[Math.floor(Math.random() * replies.length)];
 
-    api.sendMessage({
+    const msg = {
       body: `${randomReply}\n\n📌 প্রোফাইল: ${KING_FB_LINK}`,
       attachment: fs.createReadStream(imagePath)
-    }, event.threadID, () => {
-      fs.unlinkSync(imagePath);
+    };
+
+    api.sendMessage(msg, event.threadID, () => {
+      fs.remove(imagePath).catch(() => {});
     });
+
   } catch (err) {
     console.error("❌ mentionKing.js Error:", err.message || err);
   }
