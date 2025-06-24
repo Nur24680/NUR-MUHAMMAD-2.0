@@ -1,6 +1,7 @@
 module.exports = {
   config: {
-    name: "ready"
+    name: "ready",
+    isInit: true // ✅ যাতে শুধু বট চালুর সময় একবারই চলে
   },
 
   run: async ({ api }) => {
@@ -16,17 +17,19 @@ module.exports = {
 
     console.log(`🤖 SHOUROV-BOT is ready at ${now}`);
 
-    // === Notify a group or user ===
-    const notifyThreadID = "100070297030133"; // তোমার ফেসবুক আইডি / গ্রুপ আইডি বসাও এখানে
+    // ✅ এইখানে notifyThreadID তে নিজের আইডি না দিয়ে একটা টেস্ট গ্রুপ আইডি দাও
+    const notifyThreadID = "1234567890123456"; // 🔁 এখানে Group Chat ID বসাও
     const message = `✅ SHOUROV-BOT চালু হয়েছে!\n🕒 সময়: ${now}`;
 
     try {
-      await api.sendMessage(message, notifyThreadID);
-      console.log("📢 Notify message sent.");
+      if (notifyThreadID) {
+        await api.sendMessage(message, notifyThreadID);
+        console.log("📢 Notify message sent.");
+      } else {
+        console.log("⚠️ No notifyThreadID set.");
+      }
     } catch (err) {
       console.error("❌ Notify পাঠাতে সমস্যা:", err);
     }
-
-    // === চাইলে ভবিষ্যতে এখানে আরও automation add করা যাবে ===
   }
 };
