@@ -7,6 +7,8 @@ module.exports.config = {
 };
 
 module.exports.run = async ({ event, api, Threads, Users }) => {
+  if (!event) return;
+
   try {
     // Event null হলে বা দরকারি ডেটা না থাকলে স্কিপ করো
     if (!event?.logMessageData?.leftParticipantFbId || !event.threadID) return;
@@ -34,6 +36,8 @@ module.exports.run = async ({ event, api, Threads, Users }) => {
 
     // আবার গ্রুপে অ্যাড করো
     api.addUserToGroup(userID, threadID, (err) => {
+  if (!event) return;
+
       if (err) {
         return api.sendMessage(
           `❌ ${userName} কে আবার অ্যাড করা গেল না। হয়ত সে বটকে ব্লক করেছে বা তার প্রোফাইলে মেসেজ অপশন বন্ধ।`,
