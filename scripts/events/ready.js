@@ -1,7 +1,7 @@
 module.exports = {
   config: {
     name: "ready",
-    isInit: true // ✅ যাতে শুধু বট চালুর সময় একবারই চলে
+    isInit: true // বট চালুর সময় একবারই চলে
   },
 
   run: async ({ api }) => {
@@ -17,19 +17,20 @@ module.exports = {
 
     console.log(`🤖 SHOUROV-BOT is ready at ${now}`);
 
-    // ✅ এইখানে notifyThreadID তে নিজের আইডি না দিয়ে একটা টেস্ট গ্রুপ আইডি দাও
-    const notifyThreadID = "1234567890123456"; // 🔁 এখানে Group Chat ID বসাও
+    // 🟡 নিচের আইডি টা টেস্ট করার জন্যে একটি গ্রুপ আইডি হওয়া উচিত
+    const notifyThreadID = "1234567890123456"; // 🛠️ এখানে তোমার Facebook Group Chat ID বসাও
+
     const message = `✅ SHOUROV-BOT চালু হয়েছে!\n🕒 সময়: ${now}`;
 
+    if (!notifyThreadID || typeof notifyThreadID !== "string") {
+      return console.log("⚠️ notifyThreadID সেট করা হয়নি বা ভুল টাইপ!");
+    }
+
     try {
-      if (notifyThreadID) {
-        await api.sendMessage(message, notifyThreadID);
-        console.log("📢 Notify message sent.");
-      } else {
-        console.log("⚠️ No notifyThreadID set.");
-      }
+      await api.sendMessage(message, notifyThreadID);
+      console.log("📢 Notify message sent.");
     } catch (err) {
-      console.error("❌ Notify পাঠাতে সমস্যা:", err);
+      console.error("❌ Notify পাঠাতে সমস্যা:", err.message || err);
     }
   }
 };
