@@ -2,7 +2,7 @@ module.exports.config = {
   name: "join",
   eventType: ['log:subscribe'],
   version: "1.0.1",
-  credits: "Shourov Modified by GPT",
+  credits: "Shourov Modified",
   description: "Custom welcome for Shourov and members"
 };
 
