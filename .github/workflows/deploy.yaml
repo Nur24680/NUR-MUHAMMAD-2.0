@@ -13,8 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Clean up broken gitmodules (if any)
+        run: |
+          rm -f .gitmodules
+          git submodule deinit -f .
+          git rm --cached SHOUROV-BOT || true
+          git config --remove-section submodule.SHOUROV-BOT || true
+
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          submodules: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
