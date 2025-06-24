@@ -1,27 +1,29 @@
-name: 🤖 SHOUROV-BOT Deploy
+name: Deploy Bot
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 রেপো ক্লোন হচ্ছে
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
 
-      - name: 🟢 Node.js সেটআপ হচ্ছে
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
 
-      - name: 📁 ডিপেন্ডেন্সি ইনস্টল হচ্ছে
-        run: npm install
+    - name: Install Dependencies
+      run: |
+        npm install
+        npm install bluebird
 
-      - name: 🚀 বট চালু হচ্ছে (index.js)
-        run: |
-          echo "Bot by King_Shourov is starting..."
-          node index.js
+    - name: Start Bot
+      run: |
+        echo "Bot by King_Shourov is starting..."
+        node index.js
