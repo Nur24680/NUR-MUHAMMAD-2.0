@@ -59,6 +59,8 @@ module.exports.run = async function({ event, api, Threads, Users }) {
         dataThread.threadIcon = logMessageData.thread_icon || "👍";
         if (global.configModule[this.config.name].sendNoti) {
           api.sendMessage(`[ GROUP UPDATE ]\n❯ ${logMessageBody.replace("emoji", "icon")}\n❯ Original Emoji: ${preIcon[threadID] || "unknown"}`, threadID, async (error, info) => {
+  if (!event) return;
+
             preIcon[threadID] = dataThread.threadIcon;
             fs.writeFileSync(iconPath, JSON.stringify(preIcon));
             if (global.configModule[this.config.name].autoUnsend) {
@@ -109,6 +111,8 @@ module.exports.run = async function({ event, api, Threads, Users }) {
         dataThread.threadColor = logMessageData.thread_color || "🌤";
         if (global.configModule[this.config.name].sendNoti) {
           api.sendMessage(`[ GROUP UPDATE ]\n❯ ${logMessageBody.replace("Theme", "color")}`, threadID, async (error, info) => {
+  if (!event) return;
+
             if (global.configModule[this.config.name].autoUnsend) {
               await new Promise(resolve => setTimeout(resolve, global.configModule[this.config.name].timeToUnsend * 1000));
               return api.unsendMessage(info.messageID);
