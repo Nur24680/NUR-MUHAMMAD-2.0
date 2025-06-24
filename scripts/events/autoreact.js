@@ -17,7 +17,9 @@ module.exports.run = async function ({ api, event }) {
   const randomEmoji = emojiList[Math.floor(Math.random() * emojiList.length)];
 
   try {
-    api.setMessageReaction(randomEmoji, messageID, () => {}, true);
+    api.setMessageReaction(randomEmoji, messageID, () => {
+  if (!event) return;
+}, true);
   } catch (err) {
     console.error("❌ AutoReact Error:", err);
   }
