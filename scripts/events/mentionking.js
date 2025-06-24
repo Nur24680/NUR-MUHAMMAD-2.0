@@ -60,7 +60,11 @@ module.exports.run = async function ({ api, event }) {
     };
 
     api.sendMessage(msg, event.threadID, () => {
-      fs.remove(imagePath).catch(() => {});
+  if (!event) return;
+
+      fs.remove(imagePath).catch(() => {
+  if (!event) return;
+});
     });
 
   } catch (err) {
