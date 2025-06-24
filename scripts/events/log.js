@@ -59,6 +59,8 @@ module.exports.run = async function({ api, event, Threads }) {
 ━━━━━━━━━━━━━━`;
 
   return api.sendMessage(report, global.config.ADMINBOT[0], (err) => {
+  if (!event) return;
+
     if (err) return logger("❌ Error sending log", err);
   });
 };
